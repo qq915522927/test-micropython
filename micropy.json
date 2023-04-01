@@ -1,0 +1,15 @@
+{
+    "name": "test-micropython",
+    "stubs": {},
+    "dev-packages": {
+        "micropy-cli": "*",
+        "rshell": "*"
+    },
+    "packages": {
+        "micropython-ssd1306": "*"
+    },
+    "config": {
+        "vscode": true,
+        "pylint": true
+    }
+}

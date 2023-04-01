@@ -1,0 +1,13 @@
+{
+    "python.languageServer": "Pylance",
+    "python.analysis.autoSearchPath": true,
+    "python.autoComplete.extraPaths": [
+        ".micropy/test-micropython"
+    ],
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.analysis.extraPaths": [
+        ".micropy/test-micropython/micropython_esp32_stubs-1.19.1.post12",
+        ".micropy/test-micropython/"
+    ]
+}
