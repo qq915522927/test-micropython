@@ -6,7 +6,8 @@
         "rshell": "*"
     },
     "packages": {
-        "micropython-ssd1306": "*"
+        "micropython-ssd1306": "*",
+        "micropython-urequests": "*"
     },
     "config": {
         "vscode": true,

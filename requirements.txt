@@ -1,1 +1,2 @@
 micropython-ssd1306
+micropython-urequests
