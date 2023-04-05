@@ -2,6 +2,7 @@
 import json
 import urequests
 from url_encode import url_encode
+import binascii
 
 
 # 百度api
@@ -59,7 +60,6 @@ def fetch_token():
     return result['access_token']
 
 
-
 def get_tts(text):
     text = url_encode(text)
     # print(f"Encoded Text: {text}")
@@ -87,3 +87,41 @@ def get_tts(text):
         print("TTS failed: HTTP Status {}".format(response.status_code))
         raise Exception("TTS failed: {}".format(response.text))
     return response
+
+speech_data = None
+
+def getasr(filename):
+    global speech_data
+    # https://ai.baidu.com/ai-doc/SPEECH/jkhq0ohzz
+    format = filename[-3:]
+
+    global ACCESS_TOKEN
+    if not ACCESS_TOKEN:
+        ACCESS_TOKEN = fetch_token()
+
+    with open(filename, 'rb') as speech_file:
+        speech_data = speech_file.read()
+
+    length = len(speech_data)
+    speech_data = binascii.b2a_base64(speech_data, newline=False)
+    speech_data = str(speech_data, 'utf-8')
+
+    params = {'dev_pid': 80001,
+              # "lm_id" : LM_ID,    #测试自训练平台开启此项
+              'format': format,
+              'rate': 16000,
+              'token': ACCESS_TOKEN,
+              'cuid': CUID,
+              'channel': 1,
+              'speech': speech_data,
+              'len': length
+              }
+    headers = {
+        "Content-Type": 'application/json'
+    }
+    r = urequests.post(url="http://vop.baidu.com/server_api",
+                       headers=headers, data=json.dumps(params))
+    work = r.json()
+    print(f"ASR Result: {work}")
+    print(work)
+    return (work['result'][0])
