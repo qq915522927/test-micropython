@@ -27,7 +27,7 @@ rate 指定音频采样率（样本/秒）
 ibuf 指定内部缓冲区长度（字节）
 """
 
-def play_audio_from_file(filename):
+def play_audio_from_file(filename, gain=None):
     """
     Play wave file
     """
@@ -56,6 +56,18 @@ def play_audio_from_file(filename):
                 # WAV文件结束
                 if num_read == 0:
                     break
+
+                if gain:
+                    # ampify the audio
+                    for i in range(0, num_read, 2):
+                        sample = struct.unpack('<h', wav_samples_mv[i:i+2])[0]
+                        sample = int(sample * gain)
+                        if sample > 32767:
+                            sample = 32767
+                        elif sample < -32768:
+                            sample = -32768
+                        wav_samples_mv[i:i+2] = struct.pack('<h', sample)
+
 
                 # 直到所有样本都写入I2S外围设备
                 num_written = 0
